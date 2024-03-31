@@ -12,17 +12,21 @@
       color: #343a40;
       font-family: Arial, sans-serif;
       padding: 20px;
+      text-align: center; /* Center align all contents */
+      justify-content: center;
+      align-content: center;
     }
     h1 {
       color: #007bff;
       text-align: center;
-      margin-top: 30px;
+      margin-top: 30px
     }
     .form-inline {
-      justify-content: center;
+      justify-content: center; /* Center the form horizontally */
     }
     .table {
       margin-top: 30px;
+      display: inline-block; /* Make the table inline-block to center it */
     }
     .table thead th {
       background-color: #007bff;
@@ -31,35 +35,46 @@
     .table-striped tbody tr:nth-of-type(odd) {
       background-color: rgba(0,123,255,.05);
     }
-  </style>
+
+    #tablesDiv{
+      align-self: center;
+    }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>URL Shortener</h1>
-    <form action="/shortUrls" method="POST" class="my-4 form-inline">
-      <label for="fullUrl" class="sr-only">URL</label>
-      <input required placeholder="Enter URL" type="url" name="fullUrl" id="fullUrl" class="form-control col-8 mr-2">
-      <button class="btn btn-primary" type="submit">Shrink</button>
-    </form>
-    
-    <table class="table table-striped table-responsive">
-      <thead>
-        <tr>
-          <th>Full URL</th>
-          <th>Short URL</th>
-          <th>Clicks</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% shortUrls.forEach(shortUrl => { %>
+    <div class="container">
+      <h1>URL Shortener</h1>
+      <form action="/shortUrls" method="POST" class="my-4 form-inline">
+        <label for="fullUrl" class="sr-only">URL</label>
+        <input required placeholder="Enter URL" type="url" name="fullUrl" id="fullUrl" class="form-control col-8 mr-2">
+        <button class="btn btn-primary" type="submit">Shrink</button>
+      </form>
+      <div id="tablesDiv">
+      <table class="table table-striped table-responsive">
+        <thead>
           <tr>
-            <td><a href="<%= shortUrl.full %>"><%= shortUrl.full %></a></td>
-            <td><a href="<%= shortUrl.short %>"><%= shortUrl.short %></a></td>
-            <td><%= shortUrl.clicks %></td>
+            <th>Full URL</th>
+            <th>Short URL</th>
+            <th>Clicks</th>
+            <th>Delete</th> <!-- New table header for delete button -->
           </tr>
-        <% }) %>
-      </tbody>
-    </table>
-  </div>
-</body> 
-</html>
+        </thead>
+        <tbody>
+          <% shortUrls.forEach(shortUrl => { %>
+            <tr>
+              <td><a href="<%= shortUrl.full %>"><%= shortUrl.full %></a></td>
+              <td><a href="<%= shortUrl.short %>"><%= shortUrl.short %></a></td>
+              <td><%= shortUrl.clicks %></td>
+              <td>
+                <form action="/shortUrls/<%= shortUrl._id %>?_method=DELETE" method="POST">
+                  <button class="btn btn-danger" type="submit">Delete</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+    </div>
+  </body>
+  </html>
